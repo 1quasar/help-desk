@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\database\Eloquent\Relations\HasMany;
+
+class Departament extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'code'
+    ];
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
+}
