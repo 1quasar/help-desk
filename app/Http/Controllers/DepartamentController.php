@@ -47,7 +47,7 @@ class DepartamentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Departament $departament)
     {
         return view('departaments.edit', compact('departament'));
     }
@@ -55,7 +55,7 @@ class DepartamentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Departament $departament)
     {
         $departament->update($request->validated());
 
@@ -67,8 +67,17 @@ class DepartamentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Departament $departament)
     {
-        //
+        if ($departament->tickets()->exists()) {
+            return back()
+                ->with('error', 'Não é possível excluir um departamento que há chamados associados.');
+        }
+
+        $departament->delete();
+
+        return redirect()
+            ->route('departaments.index')
+            ->with('success', 'Departamento removido com sucesso!');
     }
 }

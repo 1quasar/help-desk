@@ -12,7 +12,7 @@ class TicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,22 @@ class TicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'departament_id' => ['required', 'exists:departaments,id'],
+            'title'          => ['required', 'string', 'max:300'],
+            'requester_name' => ['required', 'string', 'max:255'],
+            'priority'       => ['required', 'in:Baixa,Média,Alta,Urgente'],
+            'description'    => ['required', 'string', 'max: 1000'],
+            'status'         => ['required', 'in:Aberta,Em Atendimento,Concluído']
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'departament_id.required' => 'Selecione o departamento correspondente.',
+            'title.required'          => 'O título do chamado é obrigatório.',
+            'requester_name.required' => 'O nome do solicitante é obrigatório.',
+            'description.required'    => 'A descrição do problema é obrigatória',
         ];
     }
 }

@@ -18,10 +18,11 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('title');
             $table->string('requester_name');
-            $table->string('priority');
+            $table->enum('priority', ['Baixa', 'Média', 'Alta', 'Urgente'])
+                ->default('Baixa');
             $table->text('description');
             $table->enum('status', ['Aberto', 'Em Atendimento', 'Concluído'])
-                ->default('aberto');
+                ->default('Aberto');
 
             $table->timestamps();
         });
