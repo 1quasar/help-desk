@@ -4,36 +4,37 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Department;
 
-class DepartamentSeeder extends Seeder
+class DepartmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Departament::updateOrCreate(
+        Department::updateOrCreate(
             [
                 'name' => 'Suporte',
                 'code' => 'TI',
             ]
         );
 
-        Departament::updateOrCreate(
+        Department::updateOrCreate(
             [
                 'name' => 'Recursos Humanos',
                 'code' => 'RH',
             ]
         );
 
-        Departament::updateOrCreate(
+        Department::updateOrCreate(
             [
                 'name' => 'Financeiro',
                 'code' => 'FIN',
             ]
         );
 
-        Departament::updateOrCreate(
+        Department::updateOrCreate(
             [
                 'name' => 'Infraestrutura',
                 'code' => 'INFRA',

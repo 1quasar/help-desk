@@ -28,7 +28,6 @@ class TicketRequest extends FormRequest
             'requester_name' => ['required', 'string', 'max:255'],
             'priority'       => ['required', 'in:Baixa,Média,Alta,Urgente'],
             'description'    => ['required', 'string', 'max: 1000'],
-            'status'         => ['required', 'in:Aberta,Em Atendimento,Concluído']
         ];
     }
 

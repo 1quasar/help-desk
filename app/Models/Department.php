@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\database\Eloquent\Relations\HasMany;
 
-class Departament extends Model
+class Department extends Model
 {
     use HasFactory;
 

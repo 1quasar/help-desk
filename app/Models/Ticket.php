@@ -11,7 +11,7 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
-        'departament_id',
+        'department_id',
         'title',
         'requester_name',
         'priority',
@@ -19,8 +19,8 @@ class Ticket extends Model
         'status'
     ];
 
-    public function departament(): BelongsTo
+    public function department(): BelongsTo
     {
-        return $this->belongsTo(Departament::class);
+        return $this->belongsTo(Department::class);
     }
 }

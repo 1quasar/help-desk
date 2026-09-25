@@ -2,10 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use App\Http\Requests\TicketRequest;
 
 class TicketController extends Controller
 {
+    private $departments;
+
+    public function __construct()
+    {
+        $this->departments = Department::all();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -13,13 +22,15 @@ class TicketController extends Controller
     {
         $search = $request->get('search');
 
-        $tickets = Ticket::with('departament')
+        $tickets = Ticket::with('department')
             ->when($search, fn($q) => $q->where('title', 'like', "%{$search}%"))
             ->orderBy('title', 'asc')
             ->paginate(10)
             ->withQueryString();
 
-        return view('tickets.index', compact('tickets', 'search'));
+        $departments = $this->departments;
+
+        return view('tickets.index', compact(['tickets', 'search', 'departments']));
     }
 
     /**
@@ -27,7 +38,9 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return view('tickets.create');
+        return view('tickets.create', [
+            'departments' => $this->departments
+        ]);
     }
 
     /**
@@ -35,21 +48,42 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        Ticket::create($request->validated());
+        // dd($request->all());
+
+        Ticket::create([
+            'department_id' => $request->department_id,
+            'title' => $request->title,
+            'requester_name' => $request->requester_name,
+            'priority' => $request->priority,
+            'description' => $request->description
+        ]);
 
         return redirect()
             ->route('tickets.index')
             ->with('success', 'Chamado registrado com sucesso!');
     }
 
+     /**
+     * Display the specified resource.
+     */
+    public function show(Ticket $ticket)
+    {
+        $departments = $this->departments;
+
+        $ticket->load([
+            'department',
+        ]);
+        return view('tickets.show', compact('ticket', 'departments'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Ticket $ticket)
     {
-        $tickets = Ticket::orderBy('title', 'asc')->get();
+        $departments = $this->departments;
 
-        return view('tickets.edit', compact('tickets', 'departaments'));
+        return view('tickets.edit', compact('ticket', 'departments'));
     }
 
     /**
@@ -57,7 +91,15 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        $ticket->update($request->validated());
+        $depatments = $this->departments;
+        $ticket->update([
+            'department_id' => $request->department_id,
+            'title' => $request->title,
+            'requester_name' => $request->requester_name,
+            'priority' => $request->priority,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
 
         return redirect()
             ->route('tickets.index')
